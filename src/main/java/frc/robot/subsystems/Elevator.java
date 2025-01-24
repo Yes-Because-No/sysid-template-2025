@@ -21,6 +21,8 @@ public class Elevator extends SubsystemBase {
     private TalonFX motor = new TalonFX(MOTOR_1ID);
     private TalonFX motor2 = new TalonFX(MOTOR_2_ID);
 
+    private StrictFollower motor1Follower = new StrictFollower(motor.getDeviceID());
+
     private final MutVoltage sysIdVoltage = Volts.mutable(0);
     private final MutDistance sysIdPosition =Meters.mutable(0);
     private final MutLinearVelocity sysIdVelocity = MetersPerSecond.mutable(0);
@@ -31,6 +33,10 @@ public class Elevator extends SubsystemBase {
                         .linearVelocity(sysIdVelocity.mut_replace(getVelocity(), MetersPerSecond));
             }, this));
 
+        
+    public Elevator(){
+        motor2.setControl(motor1Follower);
+    }
     private void setVoltage(double voltage) {
         motor.setVoltage(voltage);
     }
