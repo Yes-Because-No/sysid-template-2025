@@ -18,10 +18,10 @@ public class Elevator extends SubsystemBase {
     private int MOTOR_1ID = 0;
     private int MOTOR_2_ID = 1;
     
-    private TalonFX motor = new TalonFX(MOTOR_1ID);
+    private TalonFX motor1 = new TalonFX(MOTOR_1ID);
     private TalonFX motor2 = new TalonFX(MOTOR_2_ID);
 
-    private StrictFollower motor1Follower = new StrictFollower(motor.getDeviceID());
+    private StrictFollower motor1Follower = new StrictFollower(motor1.getDeviceID());
 
     private final MutVoltage sysIdVoltage = Volts.mutable(0);
     private final MutDistance sysIdPosition =Meters.mutable(0);
@@ -38,19 +38,19 @@ public class Elevator extends SubsystemBase {
         motor2.setControl(motor1Follower);
     }
     private void setVoltage(double voltage) {
-        motor.setVoltage(voltage);
+        motor1.setVoltage(voltage);
     }
 
     private double getVoltage() {
-        return motor.getMotorVoltage().getValueAsDouble();
+        return motor1.getMotorVoltage().getValueAsDouble();
     }
 
     private double getPosition() {
-        return motor.getPosition().getValueAsDouble();
+        return motor1.getPosition().getValueAsDouble();
     }
 
     private double getVelocity() {
-        return motor.getVelocity().getValueAsDouble();
+        return motor1.getVelocity().getValueAsDouble();
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
