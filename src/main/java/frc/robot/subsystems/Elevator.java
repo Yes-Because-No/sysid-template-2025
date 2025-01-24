@@ -1,12 +1,8 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.MutableMeasure;
-import edu.wpi.first.units.measure.Velocity;
-import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -15,13 +11,19 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
-public class Elevator extends SubsystemBase {
-    private int CAN_ID;
-    private CANSparkMax motor = new CANSparkMax(CAN_ID, MotorType.kBrushless);
+import com.ctre.phoenix6.controls.StrictFollower;
+import com.ctre.phoenix6.hardware.TalonFX;
 
-    private final MutVoltage sysIdVoltage = MutableMeasure.mutable(Volts.of(0));
-    private final MutDistance sysIdPosition = MutableMeasure.mutable(Meters.of(0));
-    private final MutLinearVelocity sysIdVelocity = MutableMeasure.mutable(MetersPerSecond.of(0));
+public class Elevator extends SubsystemBase {
+    private int MOTOR_1ID = 0;
+    private int MOTOR_2_ID = 1;
+    
+    private TalonFX motor = new TalonFX(MOTOR_1ID);
+    private TalonFX motor2 = new TalonFX(MOTOR_2_ID);
+
+    private final MutVoltage sysIdVoltage = Volts.mutable(0);
+    private final MutDistance sysIdPosition =Meters.mutable(0);
+    private final MutLinearVelocity sysIdVelocity = MetersPerSecond.mutable(0);
     private SysIdRoutine sysIdRoutine = new SysIdRoutine(new SysIdRoutine.Config(),
             new SysIdRoutine.Mechanism(voltage -> setVoltage(voltage.magnitude()), log -> {
                 log.motor("Elevator").voltage(sysIdVoltage.mut_replace(getVoltage(), Volts))
@@ -34,15 +36,15 @@ public class Elevator extends SubsystemBase {
     }
 
     private double getVoltage() {
-        return motor.getAppliedOutput();
+        return motor.getMotorVoltage().getValueAsDouble();
     }
 
     private double getPosition() {
-        return motor.getEncoder().getPosition();
+        return motor.getPosition().getValueAsDouble();
     }
 
     private double getVelocity() {
-        return motor.getEncoder().getVelocity();
+        return motor.getVelocity().getValueAsDouble();
     }
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
