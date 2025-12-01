@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.LinearSubsystem;
 
 public class RobotContainer {
-  LinearSubsystem linearSubsystem = new LinearSubsystem();
+  LinearSubsystem linearSubsystem = new LinearSubsystem(Constants.MOTORS);
   CommandXboxController controller = new CommandXboxController(0);
 
   public RobotContainer() {
