@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LinearSubsystem;
 
 public class RobotContainer {
-  Elevator elevator = new Elevator();
+  LinearSubsystem linearSubsystem = new LinearSubsystem();
   CommandXboxController controller = new CommandXboxController(0);
 
   public RobotContainer() {
@@ -19,10 +19,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    controller.x().whileTrue(elevator.sysIdQuasistatic(Direction.kForward));
-    controller.y().whileTrue(elevator.sysIdQuasistatic(Direction.kReverse));
-    controller.a().whileTrue(elevator.sysIdDynamic(Direction.kForward));
-    controller.b().whileTrue(elevator.sysIdDynamic(Direction.kReverse));
+    controller.x().whileTrue(linearSubsystem.sysIdQuasistatic(Direction.kForward));
+    controller.y().whileTrue(linearSubsystem.sysIdQuasistatic(Direction.kReverse));
+    controller.a().whileTrue(linearSubsystem.sysIdDynamic(Direction.kForward));
+    controller.b().whileTrue(linearSubsystem.sysIdDynamic(Direction.kReverse));
   }
 
   public Command getAutonomousCommand() {
